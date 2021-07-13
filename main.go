@@ -42,7 +42,7 @@ func main() {
 			panic(err)
 		}
 
-		allowedTime := time.Now().Add(time.Duration(duration) * time.Hour)
+		allowedTime := time.Now().Add(-time.Duration(duration) * time.Hour)
 		if createdAt.Before(allowedTime) {
 			clientset.CoreV1().Pods(NAMESPACE).Delete(context.TODO(), pod.Name, metav1.DeleteOptions{})
 		}
