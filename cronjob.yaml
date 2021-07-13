@@ -1,0 +1,27 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: pod-terminator
+spec:
+  successfulJobsHistoryLimit: 1
+  # UTC
+  schedule: "0 */2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: terminator
+              image: yapcheekian/pod-terminator:v1
+              env:
+                - name: namespace
+                  value: default
+                - name: label
+                  value: "scope=console"
+                - name: duration # in hours
+                  value: "2"
+              resources:
+                requests:
+                  memory: "256Mi"
+                  cpu: "20m"
